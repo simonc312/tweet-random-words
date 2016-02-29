@@ -53,6 +53,8 @@ public class MainActivity extends AppCompatActivity {
                     mDrawerLayout.openDrawer(GravityCompat.START);
                 }
             });
+
+            setUpNavDrawerListener();
         }
     }
 

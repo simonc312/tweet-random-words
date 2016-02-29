@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.codepath.oauth.OAuthLoginActionBarActivity;
@@ -11,21 +12,30 @@ import com.simonc312.apps.tweetrandomwords.R;
 import com.simonc312.apps.tweetrandomwords.rest.RestApplication;
 import com.simonc312.apps.tweetrandomwords.rest.RestClient;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class LoginActivity extends OAuthLoginActionBarActivity<RestClient> {
 
+    @Bind(R.id.btn_login)
+    Button btn_login;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-        checkIfLaunchMain();
 		setContentView(R.layout.activity_login);
 		ButterKnife.bind(this);
 	}
 
+    @Override
+    public void onResume(){
+        super.onResume();
+        checkIfLaunchMain();
+    }
+
     private void checkIfLaunchMain() {
-        if(RestApplication.isLoggedIn())
+        if(getClient().isAuthenticated())
             startActivity(new Intent(this, MainActivity.class));
     }
 
@@ -41,10 +51,9 @@ public class LoginActivity extends OAuthLoginActionBarActivity<RestClient> {
 	// i.e Display application "homepage"
 	@Override
 	public void onLoginSuccess() {
-		// Intent i = new Intent(this, PhotosActivity.class);
-		// startActivity(i);
 		Toast.makeText(this,"Welcome",Toast.LENGTH_LONG).show();
         checkIfLaunchMain();
+        btn_login.setEnabled(true);
 	}
 
 	// OAuth authentication flow failed, handle the error
@@ -59,6 +68,7 @@ public class LoginActivity extends OAuthLoginActionBarActivity<RestClient> {
 	// This should be tied to a button used to login
     @OnClick(R.id.btn_login)
 	public void loginToRest(View view) {
+        btn_login.setEnabled(false);
 		getClient().connect();
 	}
 

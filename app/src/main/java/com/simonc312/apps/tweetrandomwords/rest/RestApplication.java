@@ -33,7 +33,7 @@ public class RestApplication extends com.activeandroid.app.Application {
     }
 
     public static boolean isLoggedIn(){
-        return getRestClient() != null && getRestClient().isAuthenticated();
+        return getRestClient().isAuthenticated();
     }
 
 

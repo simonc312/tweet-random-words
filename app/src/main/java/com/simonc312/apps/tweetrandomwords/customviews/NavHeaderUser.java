@@ -52,20 +52,21 @@ public class NavHeaderUser extends LinearLayout {
     private void setContentView() {
         LayoutInflater.from(getContext()).inflate(R.layout.layout_profile, this);
         ButterKnife.bind(this);
-        //setDefaultProfileImage();
     }
 
     @Override
     public void onFinishInflate(){
         super.onFinishInflate();
-        fetchProfileData();
+        if(RestApplication.isLoggedIn())
+            fetchProfileData();
     }
 
-    private void updateProfileImage(String url) {
+    private void updateImage(String url, ImageView imageView) {
         Glide.with(getContext())
                 .load(url)
+                .error(R.color.colorPrimary)
                 .centerCrop()
-                .into(iv_picture);
+                .into(imageView);
     }
 
     private void fetchProfileData() {
@@ -75,6 +76,7 @@ public class NavHeaderUser extends LinearLayout {
                 super.onSuccess(statusCode, headers, response);
                 try {
                     String profileImage = response.getString("profile_image_url");
+                    String backgroundImage = response.getString("profile_background_image_url");
                     String fullname = response.getString("name");
                     String username = response.getString("screen_name");
                     String location = response.getString("location");
@@ -82,7 +84,8 @@ public class NavHeaderUser extends LinearLayout {
                     tv_fullname.setText(fullname);
                     tv_username.setText(username);
                     tv_location.setText(location);
-                    updateProfileImage(profileImage);
+                    updateImage(profileImage,iv_picture);
+                    updateImage(backgroundImage,iv_background);
 
                 } catch (JSONException e) {
                     e.printStackTrace();
