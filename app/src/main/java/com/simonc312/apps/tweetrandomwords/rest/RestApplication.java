@@ -1,4 +1,4 @@
-package com.simonc312.apps.tweetrandomwords;
+package com.simonc312.apps.tweetrandomwords.rest;
 
 import android.content.Context;
 
@@ -23,4 +23,18 @@ public class RestApplication extends com.activeandroid.app.Application {
 	public static RestClient getRestClient() {
 		return (RestClient) RestClient.getInstance(RestClient.class, RestApplication.context);
 	}
+
+    public static boolean logout(){
+        if(getRestClient() != null) {
+            getRestClient().clearAccessToken();
+            return true;
+        }
+        return false;
+    }
+
+    public static boolean isLoggedIn(){
+        return getRestClient() != null && getRestClient().isAuthenticated();
+    }
+
+
 }

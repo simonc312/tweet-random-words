@@ -12,7 +12,7 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
-        android:name="com.simonc312.apps.tweetrandomwords.RestApplication"
+        android:name=".rest.RestApplication"
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
@@ -25,9 +25,9 @@
             android:value="1" />
 
         <activity
-            android:name="com.simonc312.apps.tweetrandomwords.LoginActivity"
-            android:theme="@style/AppTheme"
-            android:label="@string/app_name" >
+            android:name=".activities.LoginActivity"
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -43,6 +43,13 @@
                     android:host="@string/oauth_host"
                     android:scheme="oauth" />
             </intent-filter>
+        </activity>
+
+        <activity android:name=".activities.MainActivity"
+            android:theme="@style/AppTheme">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activities.LoginActivity" />
         </activity>
     </application>
 
