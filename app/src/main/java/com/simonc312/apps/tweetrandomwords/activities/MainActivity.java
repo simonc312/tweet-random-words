@@ -1,15 +1,16 @@
 package com.simonc312.apps.tweetrandomwords.activities;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
-import android.view.View;
 
+import com.simonc312.apps.tweetrandomwords.fragments.HomeTimelineFragment;
 import com.simonc312.apps.tweetrandomwords.R;
 import com.simonc312.apps.tweetrandomwords.rest.RestApplication;
 
@@ -36,8 +37,20 @@ public class MainActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         setUpActionBar();
         setUpNavDrawer();
+        selectDefaultDrawerItem();
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                mDrawerLayout.openDrawer(GravityCompat.START);
+                return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+    
     private void setUpActionBar() {
         setSupportActionBar(mToolbar);
     }
@@ -46,14 +59,7 @@ public class MainActivity extends AppCompatActivity {
     private void setUpNavDrawer() {
         if (mToolbar != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            mToolbar.setNavigationIcon(R.drawable.ic_launcher);
-            mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    mDrawerLayout.openDrawer(GravityCompat.START);
-                }
-            });
-
+            mToolbar.setNavigationIcon(R.drawable.ic_menu_black_24dp);
             setUpNavDrawerListener();
         }
     }
@@ -67,9 +73,46 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.action_logout:
                         if(RestApplication.logout()) finish();
                         break;
+                    default:
+                        selectDrawerItem(item);
                 }
                 return false;
             }
         });
     }
+
+    public void selectDefaultDrawerItem(){
+        selectDrawerItem(mNavigationView.getMenu().findItem(R.id.action_timeline));
+    }
+
+    public void selectDrawerItem(MenuItem menuItem) {
+        // Create a new fragment and specify the planet to show based on
+        // position
+        Fragment fragment = null;
+
+        Class fragmentClass;
+        switch(menuItem.getItemId()) {
+            case R.id.action_timeline:
+                fragmentClass = HomeTimelineFragment.class;
+                break;
+            default:
+                fragmentClass = HomeTimelineFragment.class;
+        }
+
+        try {
+            fragment = (Fragment) fragmentClass.newInstance();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        // Insert the fragment by replacing any existing fragment
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.fl_container, fragment).commit();
+
+        // Highlight the selected item, update the title, and close the drawer
+        menuItem.setChecked(true);
+        setTitle(menuItem.getTitle());
+        mDrawerLayout.closeDrawers();
+    }
+
 }

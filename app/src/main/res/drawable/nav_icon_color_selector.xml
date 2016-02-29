@@ -1,0 +1,7 @@
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:color="@color/colorPrimary" android:state_checked="true" />
+    <item android:color="@color/colorPrimaryDark" android:state_pressed="true" />
+    <item android:color="@color/colorPrimaryDark" android:state_long_pressable="true" />
+    <!-- This is the default color -->
+    <item android:color="@color/md_grey_600" />
+</selector>

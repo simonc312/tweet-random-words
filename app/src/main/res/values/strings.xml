@@ -8,5 +8,6 @@
     <string name="fullname">Full Name</string>
     <string name="username">Username</string>
     <string name="location">Location</string>
+    <string name="timeline">Timeline</string>
 
 </resources>

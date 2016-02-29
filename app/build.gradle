@@ -16,6 +16,11 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
         }
     }
+
+    packagingOptions {
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/NOTICE'
+    }
 }
 
 repositories {
@@ -31,6 +36,12 @@ dependencies {
     compile 'com.android.support:design:23.1.1'
 
     compile 'com.jakewharton:butterknife:7.0.1'
+
+    compile (
+            [group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: '2.7.0'],
+            [group: 'com.fasterxml.jackson.core', name: 'jackson-annotations', version: '2.7.0'],
+            [group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.7.0']
+    )
 
     // Picasso for remote image loading
     compile 'com.github.bumptech.glide:glide:3.7.0'
