@@ -1,6 +1,7 @@
 package com.simonc312.apps.tweetrandomwords.adapters;
 
 import android.content.Context;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -45,5 +46,25 @@ public class TimelineAdapter extends RecyclerView.Adapter<TweetViewHolder> {
     public void addAll(List<Tweet> newList){
         tweets.addAll(newList);
         notifyItemRangeInserted(tweets.size()-newList.size(),tweets.size());
+    }
+
+    /**
+     *
+     *
+     * @return last tweet's id adjusted by one or null if empty.
+     */
+    @Nullable
+    public String getMaxId(){
+        if(tweets.isEmpty()) return null;
+        return String.valueOf(tweets.get(tweets.size()-1).getId() - 1);
+    }
+
+    /**
+     *
+     * @return the greatest id processed (at beginning of the list)
+     */
+    public String getSinceId() {
+        if(tweets.isEmpty()) return null;
+        else return String.valueOf(tweets.get(0).getId());
     }
 }

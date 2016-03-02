@@ -10,5 +10,6 @@ public abstract class TweetMixin {
 
     TweetMixin(@JsonProperty("text") String text,
                @JsonProperty("created_at") String timeStamp,
+               @JsonProperty("id") long id,
                @JsonProperty("user") User user) {}
 }

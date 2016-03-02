@@ -7,14 +7,20 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true">
 
-    <FrameLayout
-        android:id="@+id/fl_container"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
         <include layout="@layout/layout_appbar" />
 
-    </FrameLayout>
+        <FrameLayout
+            android:id="@+id/fl_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+        </FrameLayout>
+
+    </LinearLayout>
 
     <android.support.design.widget.NavigationView
         android:id="@+id/nav_view"

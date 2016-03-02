@@ -2,6 +2,7 @@ package com.simonc312.apps.tweetrandomwords.fragments;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -16,6 +17,7 @@ import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.simonc312.apps.tweetrandomwords.R;
 import com.simonc312.apps.tweetrandomwords.adapters.TimelineAdapter;
+import com.simonc312.apps.tweetrandomwords.helpers.EndlessRVScrollListener;
 import com.simonc312.apps.tweetrandomwords.mixins.TweetMixin;
 import com.simonc312.apps.tweetrandomwords.mixins.UserMixin;
 import com.simonc312.apps.tweetrandomwords.models.Tweet;
@@ -38,6 +40,8 @@ import butterknife.ButterKnife;
  */
 public class HomeTimelineFragment extends android.support.v4.app.Fragment{
 
+    @Bind(R.id.swipeRefreshLayout)
+    SwipeRefreshLayout swipeRefreshLayout;
     @Bind(R.id.recyclerview)
     RecyclerView recyclerView;
     TimelineAdapter adapter;
@@ -48,7 +52,8 @@ public class HomeTimelineFragment extends android.support.v4.app.Fragment{
         View view = inflater.inflate(R.layout.fragment_home_timeline,container,false);
         ButterKnife.bind(this,view);
         setupRecyclerview(recyclerView);
-        fetchData();
+        setupSwipeRefresh(swipeRefreshLayout);
+        fetchData(false);
         return view;
     }
 
@@ -57,15 +62,35 @@ public class HomeTimelineFragment extends android.support.v4.app.Fragment{
         ButterKnife.unbind(this);
     }
 
-    private void setupRecyclerview(RecyclerView recyclerView) {
+    private void setupRecyclerview(final RecyclerView recyclerView) {
         if(adapter == null)
             adapter = new TimelineAdapter(getContext(),new ArrayList<Tweet>());
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(adapter);
+        recyclerView.addOnScrollListener(new EndlessRVScrollListener() {
+            @Override
+            public void onLoadMore(int current_page) {
+                fetchData(false);
+            }
+        });
     }
 
-    private void fetchData(){
-        RestApplication.getRestClient().getHomeTimeline(null,null, new JsonHttpResponseHandler(){
+    private void setupSwipeRefresh(final SwipeRefreshLayout swipeRefreshLayout) {
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                fetchData(true);
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        });
+
+        swipeRefreshLayout.setColorSchemeColors(R.color.colorPrimary);
+    }
+
+    private void fetchData(boolean fetchLatest){
+        String maxId = adapter.getMaxId();
+        String sinceId = fetchLatest ? adapter.getSinceId() : null;
+        RestApplication.getRestClient().getHomeTimeline(maxId,sinceId, new JsonHttpResponseHandler(){
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray response) {

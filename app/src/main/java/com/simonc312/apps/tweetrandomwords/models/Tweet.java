@@ -8,10 +8,12 @@ public class Tweet {
     private String tweet;
     private User user;
     private String timeStamp;
+    private long id;
 
-    public Tweet(String tweet, String timeStamp, User user){
+    public Tweet(String tweet, String timeStamp, long id, User user){
         this.tweet = tweet;
         this.timeStamp = timeStamp;
+        this.id = id;
         this.user = user;
     }
 
@@ -30,4 +32,6 @@ public class Tweet {
     public String getTimeStamp() {
         return timeStamp;
     }
+
+    public long getId(){ return id;}
 }

@@ -63,9 +63,9 @@ public class RestClient extends OAuthBaseClient {
 		params.put("format", "json");
         params.put("count",42);
 		if(max_id != null)
-			params.put("max_id",max_id); //need to decrement this id by 1 because its inclusive
+			params.put("max_id",max_id); //lowest id processed already
 		if(since_id != null)
-			params.put("since_id",since_id); //set this to the last id tweet received
+			params.put("since_id",since_id); //set this to the greatest id tweet received
         client.get(apiUrl, params, handler);
 	}
 
