@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -46,10 +47,14 @@ public class HomeTimelineFragment extends android.support.v4.app.Fragment{
     RecyclerView recyclerView;
     TimelineAdapter adapter;
 
+    public static HomeTimelineFragment newInstance() {
+        return new HomeTimelineFragment();
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_home_timeline,container,false);
+        View view = inflater.inflate(R.layout.fragment_timeline,container,false);
         ButterKnife.bind(this,view);
         setupRecyclerview(recyclerView);
         setupSwipeRefresh(swipeRefreshLayout);
@@ -87,34 +92,37 @@ public class HomeTimelineFragment extends android.support.v4.app.Fragment{
         swipeRefreshLayout.setColorSchemeColors(R.color.colorPrimary);
     }
 
-    private void fetchData(boolean fetchLatest){
+    protected void fetchData(boolean fetchLatest){
         String maxId = adapter.getMaxId();
         String sinceId = fetchLatest ? adapter.getSinceId() : null;
-        RestApplication.getRestClient().getHomeTimeline(maxId,sinceId, new JsonHttpResponseHandler(){
-
+        RestApplication.getRestClient().getHomeTimeline(maxId, sinceId, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
-                super.onSuccess(statusCode, headers, response);
-                ObjectReader reader = new ObjectMapper()
-                        .setPropertyNamingStrategy(PropertyNamingStrategy.LOWER_CAMEL_CASE)
-                        .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
-                        .addMixIn(User.class, UserMixin.class)
-                        .addMixIn(Tweet.class, TweetMixin.class)
-                        .reader()
-                        .with(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT)
-                        .forType(new TypeReference<List<Tweet>>() {});
-                try {
-                    List<Tweet> tweetList = reader.readValue(response.toString());
-                    adapter.addAll(tweetList);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                handleOnSuccess(response);
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-                super.onFailure(statusCode, headers, throwable, errorResponse);
+                Toast.makeText(getContext(), R.string.error, Toast.LENGTH_SHORT);
             }
         });
+    }
+
+    protected void handleOnSuccess(JSONArray response){
+        ObjectReader reader = new ObjectMapper()
+                .setPropertyNamingStrategy(PropertyNamingStrategy.LOWER_CAMEL_CASE)
+                .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
+                .addMixIn(User.class, UserMixin.class)
+                .addMixIn(Tweet.class, TweetMixin.class)
+                .reader()
+                .with(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT)
+                .forType(new TypeReference<List<Tweet>>() {
+                });
+        try {
+            List<Tweet> tweetList = reader.readValue(response.toString());
+            adapter.addAll(tweetList);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

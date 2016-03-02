@@ -4,7 +4,7 @@ package com.simonc312.apps.tweetrandomwords.models;
  * Created by Simon on 2/28/2016.
  */
 public class User {
-    String username;
+    public String username;
     String fullname;
     String profileImage;
     String backgroundImage;

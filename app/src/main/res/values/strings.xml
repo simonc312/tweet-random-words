@@ -9,5 +9,7 @@
     <string name="username">Username</string>
     <string name="location">Location</string>
     <string name="timeline">Timeline</string>
+    <string name="error">Sorry unable to load tweets</string>
+    <string name="your_tweets">Your Tweets</string>
 
 </resources>

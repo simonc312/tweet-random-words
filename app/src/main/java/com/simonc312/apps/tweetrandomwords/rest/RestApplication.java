@@ -2,6 +2,8 @@ package com.simonc312.apps.tweetrandomwords.rest;
 
 import android.content.Context;
 
+import com.simonc312.apps.tweetrandomwords.models.User;
+
 /*
  * This is the Android application itself and is used to configure various settings
  * including the image cache in memory and on disk. This also adds a singleton
@@ -13,8 +15,13 @@ import android.content.Context;
  */
 public class RestApplication extends com.activeandroid.app.Application {
 	private static Context context;
+    private static User authenticatedUser;
 
-	@Override
+    public static User getAuthenticatedUser() {
+        return authenticatedUser;
+    }
+
+    @Override
 	public void onCreate() {
 		super.onCreate();
 		RestApplication.context = this;
@@ -26,6 +33,7 @@ public class RestApplication extends com.activeandroid.app.Application {
 
     public static boolean logout(){
         if(getRestClient() != null) {
+            authenticatedUser = null;
             getRestClient().clearAccessToken();
             return true;
         }
@@ -37,4 +45,9 @@ public class RestApplication extends com.activeandroid.app.Application {
     }
 
 
+    public static void setAuthenticatedUser(User user) {
+        if(isLoggedIn()){
+            authenticatedUser = user;
+        }
+    }
 }

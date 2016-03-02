@@ -3,6 +3,9 @@
     <item android:id="@+id/action_timeline"
         android:icon="@drawable/ic_timeline_black_24dp"
         android:title="@string/timeline"/>
+    <item android:id="@+id/action_your_tweets"
+          android:icon="@drawable/ic_timeline_black_24dp"
+          android:title="@string/your_tweets"/>
     <item android:id="@+id/action_logout"
         android:icon="@drawable/ic_logout"
         android:title="@string/logout" />

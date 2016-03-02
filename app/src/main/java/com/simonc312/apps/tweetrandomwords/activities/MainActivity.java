@@ -10,8 +10,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
+import com.simonc312.apps.tweetrandomwords.customviews.NavHeaderUser;
 import com.simonc312.apps.tweetrandomwords.fragments.HomeTimelineFragment;
 import com.simonc312.apps.tweetrandomwords.R;
+import com.simonc312.apps.tweetrandomwords.fragments.UserTimelineFragment;
+import com.simonc312.apps.tweetrandomwords.models.User;
 import com.simonc312.apps.tweetrandomwords.rest.RestApplication;
 
 import butterknife.Bind;
@@ -90,19 +93,16 @@ public class MainActivity extends AppCompatActivity {
         // position
         Fragment fragment = null;
 
-        Class fragmentClass;
         switch(menuItem.getItemId()) {
             case R.id.action_timeline:
-                fragmentClass = HomeTimelineFragment.class;
+                fragment = HomeTimelineFragment.newInstance();
+                break;
+            case R.id.action_your_tweets:
+                User user = RestApplication.getAuthenticatedUser();
+                fragment = UserTimelineFragment.newInstance(user.username);
                 break;
             default:
-                fragmentClass = HomeTimelineFragment.class;
-        }
-
-        try {
-            fragment = (Fragment) fragmentClass.newInstance();
-        } catch (Exception e) {
-            e.printStackTrace();
+                fragment = HomeTimelineFragment.newInstance();
         }
 
         // Insert the fragment by replacing any existing fragment

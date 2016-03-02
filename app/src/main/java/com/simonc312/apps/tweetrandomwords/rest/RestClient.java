@@ -69,4 +69,18 @@ public class RestClient extends OAuthBaseClient {
         client.get(apiUrl, params, handler);
 	}
 
+	public void getUserTimeline(String screenName, String max_id, String since_id, JsonHttpResponseHandler handler) {
+		String apiUrl = getApiUrl("/statuses/user_timeline.json");
+		// Can specify query string params directly or through RequestParams.
+		RequestParams params = new RequestParams();
+		params.put("format", "json");
+		params.put("count",42);
+        params.put("screen_name",screenName);
+		if(max_id != null)
+			params.put("max_id",max_id); //lowest id processed already
+		if(since_id != null)
+			params.put("since_id",since_id); //set this to the greatest id tweet received
+		client.get(apiUrl, params, handler);
+	}
+
 }
