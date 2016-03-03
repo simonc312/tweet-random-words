@@ -18,6 +18,7 @@
         android:layout_margin="@dimen/default_padding"
         app:fabSize="normal"
         app:layout_anchor="@id/drawer_layout"
-        app:layout_anchorGravity="right|bottom|end"/>
+        app:layout_anchorGravity="right|bottom|end"
+        app:layout_behavior="com.simonc312.apps.tweetrandomwords.helpers.ScrollAwareFABBehavior"/>
 
 </android.support.design.widget.CoordinatorLayout>

@@ -3,6 +3,7 @@ package com.simonc312.apps.tweetrandomwords.activities;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -30,6 +31,8 @@ public class UpdateStatusActivity extends AppCompatActivity {
     EditText et_status;
     @Bind(R.id.tv_char_count)
     TextView tv_char_count;
+    @Bind(R.id.btn_send)
+    Button btn_send;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,11 +41,13 @@ public class UpdateStatusActivity extends AppCompatActivity {
         setSupportActionBar(mToolbar);
         getSupportActionBar().setTitle(R.string.compose_tweet);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        handleTextChange(et_status.getText().toString());
     }
 
     @OnTextChanged(R.id.tv_status)
     public void handleTextChange(CharSequence text){
         tv_char_count.setText(String.format("%d/140",text.length()));
+        btn_send.setEnabled(text.length() > 0);
     }
 
     @OnClick(R.id.btn_send)

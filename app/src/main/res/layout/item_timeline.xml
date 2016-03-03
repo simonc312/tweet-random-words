@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:paddingTop="@dimen/default_padding"
-    android:paddingBottom="@dimen/default_padding">
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="@dimen/default_padding"
+                android:paddingBottom="@dimen/default_padding">
 
     <ImageView
         android:id="@+id/iv_picture"
@@ -27,4 +28,29 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/iv_picture"
         android:clickable="true"/>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_tweet"
+        android:layout_marginTop="@dimen/default_padding"
+        android:gravity="center">
+
+        <ImageView
+            android:id="@+id/iv_reply"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/default_padding"
+            app:srcCompat="@drawable/reply"/>
+
+        <ImageView
+            android:id="@+id/iv_retweet"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/default_padding"
+            app:srcCompat="@drawable/twitter_retweet"/>
+
+    </LinearLayout>
+
 </RelativeLayout>
