@@ -91,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
     public void selectDrawerItem(MenuItem menuItem) {
         // Create a new fragment and specify the planet to show based on
         // position
-        Fragment fragment = null;
+        Fragment fragment;
 
         switch(menuItem.getItemId()) {
             case R.id.action_timeline:

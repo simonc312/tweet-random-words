@@ -1,6 +1,7 @@
 package com.simonc312.apps.tweetrandomwords.mixins;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.simonc312.apps.tweetrandomwords.models.Entities;
 import com.simonc312.apps.tweetrandomwords.models.User;
 
 /**
@@ -11,5 +12,6 @@ public abstract class TweetMixin {
     TweetMixin(@JsonProperty("text") String text,
                @JsonProperty("created_at") String timeStamp,
                @JsonProperty("id") long id,
+               @JsonProperty("entities") Entities entities,
                @JsonProperty("user") User user) {}
 }

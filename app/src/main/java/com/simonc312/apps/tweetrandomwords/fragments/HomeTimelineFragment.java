@@ -15,12 +15,15 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectReader;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
+import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.simonc312.apps.tweetrandomwords.R;
 import com.simonc312.apps.tweetrandomwords.adapters.TimelineAdapter;
 import com.simonc312.apps.tweetrandomwords.helpers.EndlessRVScrollListener;
+import com.simonc312.apps.tweetrandomwords.mixins.EntitiesDeserializer;
 import com.simonc312.apps.tweetrandomwords.mixins.TweetMixin;
 import com.simonc312.apps.tweetrandomwords.mixins.UserMixin;
+import com.simonc312.apps.tweetrandomwords.models.Entities;
 import com.simonc312.apps.tweetrandomwords.models.Tweet;
 import com.simonc312.apps.tweetrandomwords.models.User;
 import com.simonc312.apps.tweetrandomwords.rest.RestApplication;
@@ -46,6 +49,7 @@ public class HomeTimelineFragment extends android.support.v4.app.Fragment{
     @Bind(R.id.recyclerview)
     RecyclerView recyclerView;
     TimelineAdapter adapter;
+    ObjectReader reader;
 
     public static HomeTimelineFragment newInstance() {
         return new HomeTimelineFragment();
@@ -58,6 +62,7 @@ public class HomeTimelineFragment extends android.support.v4.app.Fragment{
         ButterKnife.bind(this,view);
         setupRecyclerview(recyclerView);
         setupSwipeRefresh(swipeRefreshLayout);
+        setupDeserializer();
         fetchData(false);
         return view;
     }
@@ -109,7 +114,20 @@ public class HomeTimelineFragment extends android.support.v4.app.Fragment{
     }
 
     protected void handleOnSuccess(JSONArray response){
-        ObjectReader reader = new ObjectMapper()
+        try {
+            List<Tweet> tweetList = reader.readValue(response.toString());
+            adapter.addAll(tweetList);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void setupDeserializer() {
+        SimpleModule simpleModule = new SimpleModule();
+        //TODO twitter-text is just really buggy right now. Don't try to use it for auto-linking with entities
+        simpleModule.addDeserializer(Entities.class, new EntitiesDeserializer());
+        reader = new ObjectMapper()
+                .registerModule(simpleModule)
                 .setPropertyNamingStrategy(PropertyNamingStrategy.LOWER_CAMEL_CASE)
                 .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
                 .addMixIn(User.class, UserMixin.class)
@@ -118,11 +136,5 @@ public class HomeTimelineFragment extends android.support.v4.app.Fragment{
                 .with(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT)
                 .forType(new TypeReference<List<Tweet>>() {
                 });
-        try {
-            List<Tweet> tweetList = reader.readValue(response.toString());
-            adapter.addAll(tweetList);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 }

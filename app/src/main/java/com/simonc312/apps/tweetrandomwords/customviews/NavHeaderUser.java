@@ -82,12 +82,12 @@ public class NavHeaderUser extends LinearLayout {
                     String username = response.getString("screen_name");
                     String location = response.getString("location");
                     User user = new User(username,fullname,profileImage,backgroundImage,location);
+                    RestApplication.setAuthenticatedUser(user);
                     tv_fullname.setText(fullname);
                     tv_username.setText(username);
                     tv_location.setText(location);
                     updateImage(profileImage, iv_picture);
                     updateImage(backgroundImage, iv_background);
-                    RestApplication.setAuthenticatedUser(user);
 
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -101,9 +101,5 @@ public class NavHeaderUser extends LinearLayout {
             }
 
         });
-    }
-
-    public String getScreenName() {
-        return tv_username.getText().toString();
     }
 }

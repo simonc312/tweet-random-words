@@ -1,13 +1,22 @@
 package com.simonc312.apps.tweetrandomwords.viewholders;
 
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
+import android.text.util.Linkify;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.simonc312.apps.tweetrandomwords.R;
+import com.simonc312.apps.tweetrandomwords.models.Entities;
 import com.simonc312.apps.tweetrandomwords.models.Tweet;
+import com.twitter.Autolink;
+import com.twitter.Extractor;
+
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -23,16 +32,36 @@ public class TweetViewHolder extends RecyclerView.ViewHolder {
     TextView tv_username;
     @Bind(R.id.iv_picture)
     ImageView iv_picture;
+    private Linkify.TransformFilter transformFilter;
+    private String scheme = "";
 
     public TweetViewHolder(View itemView) {
         super(itemView);
-        ButterKnife.bind(this,itemView);
+        ButterKnife.bind(this, itemView);
+        transformFilter = new Linkify.TransformFilter() {
+            @Override
+            public String transformUrl(Matcher match, String url) {
+                return url;
+            }
+        };
     }
 
     public void setTweet(Tweet tweet){
+        Autolink autolink = new Autolink();
         tv_tweet.setText(tweet.getTweet());
         tv_username.setText(tweet.getUsername());
         setImage(tweet.getProfileImage());
+        linkifyTweet(tv_tweet, tweet.getEntities());
+    }
+
+    private void linkifyTweet(TextView textView, List<Extractor.Entity> entities) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("(");
+        for(Extractor.Entity e : entities){
+            sb.append("("+e.getValue()+")|");
+        }
+        sb.append(")+");
+        Linkify.addLinks(textView, Pattern.compile(sb.toString()),scheme,null,transformFilter);
     }
 
     private void setImage(String url){
