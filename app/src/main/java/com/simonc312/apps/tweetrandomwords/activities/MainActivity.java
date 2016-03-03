@@ -1,5 +1,6 @@
 package com.simonc312.apps.tweetrandomwords.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -19,6 +20,8 @@ import com.simonc312.apps.tweetrandomwords.rest.RestApplication;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
+import butterknife.OnTextChanged;
 
 /**
  * Created by Simon on 2/28/2016.
@@ -52,6 +55,11 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @OnClick(R.id.fab)
+    public void handleFabClick(){
+        startActivityForResult(new Intent(this,UpdateStatusActivity.class),UpdateStatusActivity.REQUEST_CODE);
     }
 
     private void setUpActionBar() {

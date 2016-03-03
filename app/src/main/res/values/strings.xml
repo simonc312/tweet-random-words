@@ -12,5 +12,9 @@
     <string name="error">Sorry unable to load tweets</string>
     <string name="your_tweets">Your Tweets</string>
     <string name="compose_tweet">Compose Tweet</string>
+    <string name="update_status_hint">So what\'s good?</string>
+    <string name="send">Send</string>
+    <string name="update_status_success">Tweet Delivered!</string>
+    <string name="update_status_error">Tweet was lost in the digital abyss..</string>
 
 </resources>

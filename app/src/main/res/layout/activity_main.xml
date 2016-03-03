@@ -1,9 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true">
 
-    <include layout="@layout/layout_navbar" />
+    <include layout="@layout/layout_navbar" android:id="@+id/drawer_layout" />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_pencil"
+        android:tint="@color/md_white_1000"
+        android:layout_margin="@dimen/default_padding"
+        app:fabSize="normal"
+        app:layout_anchor="@id/drawer_layout"
+        app:layout_anchorGravity="right|bottom|end"/>
 
 </android.support.design.widget.CoordinatorLayout>

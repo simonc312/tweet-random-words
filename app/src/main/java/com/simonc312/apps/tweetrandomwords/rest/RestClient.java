@@ -83,4 +83,20 @@ public class RestClient extends OAuthBaseClient {
 		client.get(apiUrl, params, handler);
 	}
 
+    public void postStatus(String status, String replyId, JsonHttpResponseHandler handler){
+        String apiUrl = getApiUrl("/statuses/update.json");
+        RequestParams params = new RequestParams();
+        params.put("status",status);
+        if(replyId != null)
+            params.put("in_reply_to_status",replyId);
+        if(false){
+            params.put("lat","");
+            params.put("long","");
+            //or
+            params.put("place_id","");
+            //also possible to add media ids
+        }
+        client.post(apiUrl,params, handler);
+    }
+
 }

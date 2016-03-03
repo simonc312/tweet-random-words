@@ -11,5 +11,6 @@
     <dimen name="default_padding">16dp</dimen>
     <dimen name="margin_small">8dp</dimen>
     <dimen name="profile_image_size">24dp</dimen>
+    <dimen name="radius">16dp</dimen>
 
 </resources>
