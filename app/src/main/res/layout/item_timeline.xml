@@ -35,22 +35,35 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/tv_tweet"
         android:layout_marginTop="@dimen/default_padding"
-        android:gravity="center">
+        android:gravity="center"
+        android:weightSum="3">
 
-        <ImageView
-            android:id="@+id/iv_reply"
-            android:layout_width="wrap_content"
+        <TextView
+            android:id="@+id/tv_reply"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:padding="@dimen/default_padding"
-            app:srcCompat="@drawable/reply"/>
+            android:drawableLeft="@drawable/reply_list"
+            android:drawableTint="@color/reply_color_list"/>
 
-        <ImageView
-            android:id="@+id/iv_retweet"
-            android:layout_width="wrap_content"
+        <TextView
+            android:id="@+id/tv_retweet"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:padding="@dimen/default_padding"
-            app:srcCompat="@drawable/twitter_retweet"/>
+            android:drawableLeft="@drawable/retweet_list"
+            android:drawableTint="@color/retweet_color_list"/>
 
+        <TextView
+            android:id="@+id/tv_favorites"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:padding="@dimen/default_padding"
+            android:drawableLeft="@drawable/heart_list"
+            android:drawableTint="@color/heart_color_list"/>
     </LinearLayout>
 
 </RelativeLayout>

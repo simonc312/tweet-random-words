@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -108,13 +109,15 @@ public class HomeTimelineFragment extends android.support.v4.app.Fragment{
 
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-                Toast.makeText(getContext(), R.string.error, Toast.LENGTH_SHORT);
+                if(getContext() != null)
+                    Toast.makeText(getContext(), R.string.error, Toast.LENGTH_SHORT);
             }
         });
     }
 
     protected void handleOnSuccess(JSONArray response){
         try {
+            //Log.d("log", response.toString());
             List<Tweet> tweetList = reader.readValue(response.toString());
             adapter.addAll(tweetList);
         } catch (IOException e) {

@@ -30,6 +30,12 @@ public class TweetViewHolder extends RecyclerView.ViewHolder {
     TextView tv_tweet;
     @Bind(R.id.tv_username)
     TextView tv_username;
+    @Bind(R.id.tv_reply)
+    TextView tv_reply;
+    @Bind(R.id.tv_retweet)
+    TextView tv_retweet;
+    @Bind(R.id.tv_favorites)
+    TextView tv_favorites;
     @Bind(R.id.iv_picture)
     ImageView iv_picture;
     private Linkify.TransformFilter transformFilter;
@@ -47,11 +53,12 @@ public class TweetViewHolder extends RecyclerView.ViewHolder {
     }
 
     public void setTweet(Tweet tweet){
-        Autolink autolink = new Autolink();
         tv_tweet.setText(tweet.getTweet());
         tv_username.setText(tweet.getUsername());
         setImage(tweet.getProfileImage());
         linkifyTweet(tv_tweet, tweet.getEntities());
+        updateTextView(tv_retweet,tweet.getRetweetCount());
+        updateTextView(tv_favorites, tweet.getFavouritesCount());
     }
 
     private void linkifyTweet(TextView textView, List<Extractor.Entity> entities) {
@@ -61,7 +68,7 @@ public class TweetViewHolder extends RecyclerView.ViewHolder {
             sb.append("("+e.getValue()+")|");
         }
         sb.append(")+");
-        Linkify.addLinks(textView, Pattern.compile(sb.toString()),scheme,null,transformFilter);
+        Linkify.addLinks(textView, Pattern.compile(sb.toString()), scheme, null, transformFilter);
     }
 
     private void setImage(String url){
@@ -69,5 +76,10 @@ public class TweetViewHolder extends RecyclerView.ViewHolder {
                 .load(url)
                 .centerCrop()
                 .into(iv_picture);
+    }
+
+    private void updateTextView(TextView textView, long count){
+        textView.setEnabled(count > 0);
+        textView.setText(String.valueOf(count));
     }
 }

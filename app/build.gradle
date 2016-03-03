@@ -6,8 +6,8 @@ android {
 
     defaultConfig {
         applicationId "com.simonc312.apps.tweetrandomwords"
-        minSdkVersion 16
-        targetSdkVersion 21
+        minSdkVersion 23
+        targetSdkVersion 23
         vectorDrawables.useSupportLibrary = true
     }
 
