@@ -16,6 +16,13 @@
         android:textAppearance="@style/TextAppearance.AppCompat.Headline"
         android:layout_centerInParent="true"/>
 
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/ic_launcher"
+        android:layout_above="@+id/tv_title"/>
+
     <ToggleButton
         android:id="@+id/btn_login"
         android:layout_width="match_parent"
