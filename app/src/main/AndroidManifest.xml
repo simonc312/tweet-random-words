@@ -18,11 +18,16 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <meta-data
-            android:name="AA_DB_NAME"
+            android:name="TWEET_RANDOM_WORDS_DB"
             android:value="RestClient.db" />
         <meta-data
-            android:name="AA_DB_VERSION"
+            android:name="TWEET_RANDOM_WORDS_DB_VERSION"
             android:value="1" />
+        <meta-data
+            android:name="AA_MODELS"
+            android:value="com.simonc312.apps.tweetrandomwords.models.Tweet,
+            com.simonc312.apps.tweetrandomwords.models.User,
+            com.simonc312.apps.tweetrandomwords.models.Entity" />
 
         <activity
             android:name=".activities.LoginActivity"
@@ -54,9 +59,11 @@
                 android:value=".activities.LoginActivity" />
         </activity>
 
-        <activity android:name=".activities.UpdateStatusActivity"
-                  android:launchMode="singleTask"
-                  android:taskAffinity="">
+        <activity
+            android:name=".activities.UpdateStatusActivity"
+            android:launchMode="singleTask"
+            android:taskAffinity=""
+            android:windowSoftInputMode="adjustResize">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activities.MainActivity" />

@@ -1,34 +1,49 @@
 package com.simonc312.apps.tweetrandomwords.models;
 
-import com.twitter.Extractor;
+import com.activeandroid.Model;
+import com.activeandroid.annotation.Column;
+import com.activeandroid.annotation.Table;
+import com.activeandroid.query.Select;
 
 import java.util.List;
 
 /**
  * Created by Simon on 2/28/2016.
  */
-public class Tweet {
-
-    private String tweet;
-    private User user;
+@Table(name = "tweets")
+public class Tweet extends Model {
+    @Column(name = "status")
+    private String status;
+    @Column(name = "timestamp")
     private String timeStamp;
+    @Column(name = "retweet_count")
     private long retweetCount;
-    private long favouritesCount;
-    private long id;
+    @Column(name = "favourite_count")
+    private long favouriteCount;
+    @Column(name = "tweet_id")
+    private long tweetId;
+    @Column(name = "user")
+    private User user;
+
     private Entities entities;
 
-    public Tweet(String tweet, String timeStamp, long retweetCount, long favoritesCount, long id, Entities entities, User user){
-        this.tweet = tweet;
+    public Tweet(){
+        super();
+    }
+
+    public Tweet(String status, String timeStamp, long retweetCount, long favoritesCount, long tweetId, Entities entities, User user){
+        super();
+        this.status = status;
         this.timeStamp = timeStamp;
         this.retweetCount = retweetCount;
-        this.favouritesCount = favoritesCount;
-        this.id = id;
+        this.favouriteCount = favoritesCount;
+        this.tweetId = tweetId;
         this.entities = entities;
         this.user = user;
     }
 
-    public String getTweet() {
-        return tweet;
+    public String getStatus() {
+        return status;
     }
 
     public String getUsername() {
@@ -43,9 +58,9 @@ public class Tweet {
         return timeStamp;
     }
 
-    public long getId(){ return id;}
+    public long getTweetId(){ return tweetId;}
 
-    public List<Extractor.Entity> getEntities() {
+    public List<Entity> getEntities() {
         return entities.getAll();
     }
 
@@ -53,7 +68,19 @@ public class Tweet {
         return retweetCount;
     }
 
-    public long getFavouritesCount() {
-        return favouritesCount;
+    public long getFavouriteCount() {
+        return favouriteCount;
+    }
+
+    public String getDisplayUsername(){
+        return String.format("@%s", user.username);
+    }
+
+    public static Tweet getTweetById(long tweetId){
+        return new Select().from(Tweet.class).where("tweet_id = ? ", tweetId).executeSingle();
+    }
+
+    public User getUser() {
+        return user;
     }
 }

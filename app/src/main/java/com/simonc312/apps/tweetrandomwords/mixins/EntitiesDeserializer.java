@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.simonc312.apps.tweetrandomwords.models.Entities;
-import static com.twitter.Extractor.Entity;
+import com.simonc312.apps.tweetrandomwords.models.Entity;
 
 import java.io.IOException;
 import java.util.ArrayList;

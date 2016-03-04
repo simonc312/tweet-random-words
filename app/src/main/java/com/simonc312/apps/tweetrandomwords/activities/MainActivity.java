@@ -107,7 +107,7 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case R.id.action_your_tweets:
                 User user = RestApplication.getAuthenticatedUser();
-                fragment = UserTimelineFragment.newInstance(user.username);
+                fragment = UserTimelineFragment.newInstance(user.getUsername());
                 break;
             default:
                 fragment = HomeTimelineFragment.newInstance();

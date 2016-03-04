@@ -1,43 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:fillViewport="false"
+    android:paddingTop="?attr/actionBarSize">
 
-    <RelativeLayout
+    <LinearLayout
+        android:layout_gravity="bottom"
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/default_padding"
-        android:padding="@dimen/default_padding"
-        android:background="@drawable/update_status_background"
-        android:layout_centerInParent="true">
+        android:layout_height="wrap_content">
 
-        <EditText
-            android:id="@+id/tv_status"
+        <include
+            layout="@layout/item_timeline"
+            android:id="@+id/item_timeline"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:maxLength="140"
-            android:maxLines="3"
-            android:hint="@string/update_status_hint"
-            android:background="@android:color/transparent"/>
+            android:layout_above="@+id/rl_tweet_bubble"
+            android:layout_margin="@dimen/default_padding"/>
 
-        <TextView
-            android:id="@+id/tv_char_count"
-            android:layout_width="wrap_content"
+
+        <RelativeLayout
+            android:id="@+id/rl_tweet_bubble"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_below="@+id/tv_status"
-            android:text="0/140"/>
+            android:layout_marginTop="@dimen/margin_small"
+            android:layout_marginLeft="@dimen/default_padding"
+            android:layout_marginRight="@dimen/default_padding"
+            android:padding="@dimen/default_padding"
+            android:background="@drawable/update_status_background"
+            android:layout_centerHorizontal="true"
+            android:layout_above="@+id/btn_send">
 
-    </RelativeLayout>
+            <EditText
+                android:id="@+id/tv_status"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxLength="140"
+                android:maxLines="3"
+                android:hint="@string/update_status_hint"
+                android:background="@android:color/transparent"/>
 
-    <Button
-        android:id="@+id/btn_send"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:drawableLeft="@drawable/ic_pencil"
-        android:text="@string/tweet"
-        android:layout_margin="@dimen/default_padding"
-        android:layout_alignParentBottom="true"
-        />
+            <TextView
+                android:id="@+id/tv_char_count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_below="@+id/tv_status"
+                android:text="0/140"/>
 
-</RelativeLayout>
+        </RelativeLayout>
+
+        <Button
+            android:id="@+id/btn_send"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@drawable/ic_pencil"
+            android:text="@string/tweet"
+            android:layout_margin="@dimen/default_padding"
+            android:layout_alignParentBottom="true"
+            />
+    </LinearLayout>
+
+</ScrollView>

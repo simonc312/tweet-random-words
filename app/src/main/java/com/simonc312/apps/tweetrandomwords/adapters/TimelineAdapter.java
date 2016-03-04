@@ -8,6 +8,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.simonc312.apps.tweetrandomwords.R;
+import com.simonc312.apps.tweetrandomwords.fragments.HomeTimelineFragment;
+import com.simonc312.apps.tweetrandomwords.helpers.ItemClickListener;
 import com.simonc312.apps.tweetrandomwords.viewholders.TweetViewHolder;
 import com.simonc312.apps.tweetrandomwords.models.Tweet;
 
@@ -19,17 +21,19 @@ import java.util.List;
 public class TimelineAdapter extends RecyclerView.Adapter<TweetViewHolder> {
 
     private final Context context;
+    private final ItemClickListener listener;
     List<Tweet> tweets;
 
-    public TimelineAdapter(Context context, List<Tweet> tweets){
+    public TimelineAdapter(Context context, List<Tweet> tweets, ItemClickListener listener){
         this.context = context;
         this.tweets = tweets;
+        this.listener = listener;
     }
 
     @Override
     public TweetViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.item_timeline, parent, false);
-        return new TweetViewHolder(view);
+        return new TweetViewHolder(view, listener);
     }
 
     @Override
@@ -56,7 +60,7 @@ public class TimelineAdapter extends RecyclerView.Adapter<TweetViewHolder> {
     @Nullable
     public String getMaxId(){
         if(tweets.isEmpty()) return null;
-        return String.valueOf(tweets.get(tweets.size()-1).getId() - 1);
+        return String.valueOf(tweets.get(tweets.size()-1).getTweetId() - 1);
     }
 
     /**
@@ -65,6 +69,10 @@ public class TimelineAdapter extends RecyclerView.Adapter<TweetViewHolder> {
      */
     public String getSinceId() {
         if(tweets.isEmpty()) return null;
-        else return String.valueOf(tweets.get(0).getId());
+        else return String.valueOf(tweets.get(0).getTweetId());
+    }
+
+    public Tweet getItem(int adapterPosition) {
+        return tweets.get(adapterPosition);
     }
 }

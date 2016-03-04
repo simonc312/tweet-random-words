@@ -1,5 +1,6 @@
 package com.simonc312.apps.tweetrandomwords.viewholders;
 
+import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.text.util.Linkify;
@@ -9,10 +10,9 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.simonc312.apps.tweetrandomwords.R;
-import com.simonc312.apps.tweetrandomwords.models.Entities;
+import com.simonc312.apps.tweetrandomwords.helpers.ItemClickListener;
+import com.simonc312.apps.tweetrandomwords.models.Entity;
 import com.simonc312.apps.tweetrandomwords.models.Tweet;
-import com.twitter.Autolink;
-import com.twitter.Extractor;
 
 import java.util.List;
 import java.util.regex.Matcher;
@@ -20,6 +20,7 @@ import java.util.regex.Pattern;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * Created by Simon on 2/28/2016.
@@ -40,9 +41,11 @@ public class TweetViewHolder extends RecyclerView.ViewHolder {
     ImageView iv_picture;
     private Linkify.TransformFilter transformFilter;
     private String scheme = "";
+    private ItemClickListener listener;
 
-    public TweetViewHolder(View itemView) {
+    public TweetViewHolder(View itemView, ItemClickListener listener) {
         super(itemView);
+        this.listener = listener;
         ButterKnife.bind(this, itemView);
         transformFilter = new Linkify.TransformFilter() {
             @Override
@@ -52,20 +55,38 @@ public class TweetViewHolder extends RecyclerView.ViewHolder {
         };
     }
 
-    public void setTweet(Tweet tweet){
-        tv_tweet.setText(tweet.getTweet());
-        tv_username.setText(tweet.getUsername());
-        setImage(tweet.getProfileImage());
-        linkifyTweet(tv_tweet, tweet.getEntities());
-        updateTextView(tv_retweet,tweet.getRetweetCount());
-        updateTextView(tv_favorites, tweet.getFavouritesCount());
+    /**
+     * This constructor will hide actions retweet, reply, favourite
+     * @param itemView
+     */
+    public TweetViewHolder(View itemView) {
+        this(itemView, null);
+        hideActions();
     }
 
-    private void linkifyTweet(TextView textView, List<Extractor.Entity> entities) {
+    @OnClick(R.id.tv_reply)
+    public void handleReplyClick(){
+        listener.handleClickEvent(getAdapterPosition());
+    }
+
+    public void setTweetOnly(Tweet tweet){
+        tv_tweet.setText(Html.fromHtml(tweet.getStatus()));
+        tv_username.setText(tweet.getDisplayUsername());
+        setImage(tweet.getProfileImage());
+    }
+
+    public void setTweet(Tweet tweet){
+        setTweetOnly(tweet);
+        linkifyTweet(tv_tweet, tweet.getEntities());
+        updateTextView(tv_retweet, tweet.getRetweetCount());
+        updateTextView(tv_favorites, tweet.getFavouriteCount());
+    }
+
+    private void linkifyTweet(TextView textView, List<Entity> entities) {
         StringBuilder sb = new StringBuilder();
         sb.append("(");
-        for(Extractor.Entity e : entities){
-            sb.append("("+e.getValue()+")|");
+        for(Entity e : entities){
+            sb.append("((@|#)*"+e.getValue()+")|");
         }
         sb.append(")+");
         Linkify.addLinks(textView, Pattern.compile(sb.toString()), scheme, null, transformFilter);
@@ -81,5 +102,11 @@ public class TweetViewHolder extends RecyclerView.ViewHolder {
     private void updateTextView(TextView textView, long count){
         textView.setEnabled(count > 0);
         textView.setText(String.valueOf(count));
+    }
+
+    private void hideActions() {
+        tv_reply.setVisibility(View.GONE);
+        tv_retweet.setVisibility(View.GONE);
+        tv_favorites.setVisibility(View.GONE);
     }
 }

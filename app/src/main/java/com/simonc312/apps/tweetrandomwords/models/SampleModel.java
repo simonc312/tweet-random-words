@@ -1,4 +1,4 @@
-package com.codepath.apps.tweetrandomwords.models;
+
 
 import java.util.List;
 

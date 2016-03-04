@@ -1,5 +1,6 @@
 package com.simonc312.apps.tweetrandomwords.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -19,8 +20,11 @@ import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.simonc312.apps.tweetrandomwords.R;
+import com.simonc312.apps.tweetrandomwords.activities.UpdateStatusActivity;
 import com.simonc312.apps.tweetrandomwords.adapters.TimelineAdapter;
 import com.simonc312.apps.tweetrandomwords.helpers.EndlessRVScrollListener;
+import com.simonc312.apps.tweetrandomwords.helpers.HorizontalDividerItemDecoration;
+import com.simonc312.apps.tweetrandomwords.helpers.ItemClickListener;
 import com.simonc312.apps.tweetrandomwords.mixins.EntitiesDeserializer;
 import com.simonc312.apps.tweetrandomwords.mixins.TweetMixin;
 import com.simonc312.apps.tweetrandomwords.mixins.UserMixin;
@@ -43,7 +47,7 @@ import butterknife.ButterKnife;
 /**
  * Created by Simon on 2/28/2016.
  */
-public class HomeTimelineFragment extends android.support.v4.app.Fragment{
+public class HomeTimelineFragment extends android.support.v4.app.Fragment implements ItemClickListener {
 
     @Bind(R.id.swipeRefreshLayout)
     SwipeRefreshLayout swipeRefreshLayout;
@@ -75,9 +79,10 @@ public class HomeTimelineFragment extends android.support.v4.app.Fragment{
 
     private void setupRecyclerview(final RecyclerView recyclerView) {
         if(adapter == null)
-            adapter = new TimelineAdapter(getContext(),new ArrayList<Tweet>());
+            adapter = new TimelineAdapter(getContext(),new ArrayList<Tweet>(),this);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(adapter);
+        recyclerView.addItemDecoration(new HorizontalDividerItemDecoration(getContext().getDrawable(android.R.drawable.divider_horizontal_bright)));
         recyclerView.addOnScrollListener(new EndlessRVScrollListener() {
             @Override
             public void onLoadMore(int current_page) {
@@ -139,5 +144,16 @@ public class HomeTimelineFragment extends android.support.v4.app.Fragment{
                 .with(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT)
                 .forType(new TypeReference<List<Tweet>>() {
                 });
+    }
+
+    @Override
+    public void handleClickEvent(int itemPosition) {
+        Tweet t = adapter.getItem(itemPosition);
+        //saving tweet does not automatically save user and entities...
+        t.getUser().save();
+        t.save();
+        Intent intent = new Intent(getContext(), UpdateStatusActivity.class);
+        intent.putExtra("tweetId",t.getTweetId());
+        getContext().startActivity(intent);
     }
 }
