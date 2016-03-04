@@ -147,13 +147,14 @@ public class HomeTimelineFragment extends android.support.v4.app.Fragment implem
     }
 
     @Override
-    public void handleClickEvent(int itemPosition) {
+    public void handleClickEvent(int itemPosition, TYPE type) {
         Tweet t = adapter.getItem(itemPosition);
         //saving tweet does not automatically save user and entities...
         t.getUser().save();
         t.save();
         Intent intent = new Intent(getContext(), UpdateStatusActivity.class);
         intent.putExtra("tweetId",t.getTweetId());
+        intent.putExtra("type",type);
         getContext().startActivity(intent);
     }
 }

@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.simonc312.apps.tweetrandomwords.R;
+import com.simonc312.apps.tweetrandomwords.helpers.ItemClickListener;
 import com.simonc312.apps.tweetrandomwords.models.Tweet;
 import com.simonc312.apps.tweetrandomwords.rest.RestApplication;
 import com.simonc312.apps.tweetrandomwords.viewholders.TweetViewHolder;
@@ -70,16 +71,27 @@ public class UpdateStatusActivity extends AppCompatActivity {
     private void handleIntent(Intent intent) {
         if(intent == null) return;
         Long tweetId = intent.getLongExtra("tweetId",-1L);
+        ItemClickListener.TYPE type = (ItemClickListener.TYPE) intent.getSerializableExtra("type");
         viewHolder = new TweetViewHolder(itemView);
         et_status.requestFocus();
         showSoftKeyboard(et_status);
 
         if(tweetId != -1L){
+
+            String titlePrefix;
+            String statusText;
             tweet = Tweet.getTweetById(tweetId);
-            viewHolder.setTweetOnly(tweet);
-            et_status.setText(tweet.getDisplayUsername());
+            if(type == ItemClickListener.TYPE.REPLY){
+                titlePrefix = "Reply to ";
+                statusText = tweet.getDisplayUsername();
+                viewHolder.setTweetOnly(tweet);
+            } else{
+                titlePrefix = "Retweet ";
+                statusText = String.format("RT %s : %s",tweet.getDisplayUsername(),tweet.getStatus());
+            }
+            et_status.setText(statusText);
             et_status.setSelection(et_status.getText().length());
-            title = "Reply to " + tweet.getDisplayUsername();
+            title = titlePrefix + tweet.getDisplayUsername();
         }
     }
 
