@@ -105,7 +105,7 @@ public class TweetViewHolder extends RecyclerView.ViewHolder {
     }
 
     private void updateTextView(TextView textView, long count){
-        textView.setEnabled(count > 0);
+        textView.setActivated(count > 0);
         textView.setText(String.valueOf(count));
     }
 

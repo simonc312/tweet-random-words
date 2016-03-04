@@ -94,10 +94,10 @@ public class UpdateStatusActivity extends AppCompatActivity {
             String titlePrefix;
             String statusText;
             tweet = Tweet.getTweetById(tweetId);
+            viewHolder.setTweetOnly(tweet);
             if(type == ItemClickListener.TYPE.REPLY){
                 titlePrefix = "Reply to ";
                 statusText = tweet.getDisplayUsername();
-                viewHolder.setTweetOnly(tweet);
             } else{
                 titlePrefix = "Retweet ";
                 statusText = String.format("RT %s : %s",tweet.getDisplayUsername(),tweet.getStatus());
