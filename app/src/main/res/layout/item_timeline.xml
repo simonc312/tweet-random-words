@@ -5,7 +5,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingTop="@dimen/default_padding"
-                android:paddingBottom="@dimen/default_padding">
+                android:paddingBottom="@dimen/default_padding"
+                android:transitionName="@string/item_transition">
 
     <ImageView
         android:id="@+id/iv_picture"

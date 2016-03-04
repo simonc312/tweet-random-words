@@ -3,6 +3,7 @@ package com.simonc312.apps.tweetrandomwords.fragments;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -147,7 +148,7 @@ public class HomeTimelineFragment extends android.support.v4.app.Fragment implem
     }
 
     @Override
-    public void handleClickEvent(int itemPosition, TYPE type) {
+    public void handleClickEvent(int itemPosition, View itemView, TYPE type) {
         Tweet t = adapter.getItem(itemPosition);
         //saving tweet does not automatically save user and entities...
         t.getUser().save();
@@ -155,6 +156,10 @@ public class HomeTimelineFragment extends android.support.v4.app.Fragment implem
         Intent intent = new Intent(getContext(), UpdateStatusActivity.class);
         intent.putExtra("tweetId",t.getTweetId());
         intent.putExtra("type",type);
-        getContext().startActivity(intent);
+
+        //pass shared elements
+        ActivityOptionsCompat options = ActivityOptionsCompat.
+                makeSceneTransitionAnimation(getActivity(), itemView, getString(R.string.item_transition));
+        getActivity().startActivityForResult(intent, UpdateStatusActivity.REQUEST_CODE, options.toBundle());
     }
 }

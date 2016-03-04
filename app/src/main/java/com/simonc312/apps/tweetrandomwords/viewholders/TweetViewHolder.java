@@ -66,12 +66,12 @@ public class TweetViewHolder extends RecyclerView.ViewHolder {
 
     @OnClick(R.id.tv_reply)
     public void handleReplyClick(){
-        listener.handleClickEvent(getAdapterPosition(), ItemClickListener.TYPE.REPLY);
+        listener.handleClickEvent(getAdapterPosition(), itemView, ItemClickListener.TYPE.REPLY);
     }
 
     @OnClick(R.id.tv_retweet)
     public void handleRetweetClick(){
-        listener.handleClickEvent(getAdapterPosition(),ItemClickListener.TYPE.RETWEET);
+        listener.handleClickEvent(getAdapterPosition(), itemView, ItemClickListener.TYPE.RETWEET);
     }
 
     public void setTweetOnly(Tweet tweet){

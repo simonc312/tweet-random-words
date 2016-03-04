@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
@@ -64,6 +65,18 @@ public class UpdateStatusActivity extends AppCompatActivity {
         handleTextChange(et_status.getText().toString());
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            // Respond to the action bar's Up/Home button
+            case android.R.id.home:
+                setResult(RESULT_CANCELED);
+                supportFinishAfterTransition();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
     /**
      * Sets up viewholder and edit text when replying to tweet
      * @param intent
@@ -73,8 +86,8 @@ public class UpdateStatusActivity extends AppCompatActivity {
         Long tweetId = intent.getLongExtra("tweetId",-1L);
         ItemClickListener.TYPE type = (ItemClickListener.TYPE) intent.getSerializableExtra("type");
         viewHolder = new TweetViewHolder(itemView);
-        et_status.requestFocus();
-        showSoftKeyboard(et_status);
+        //et_status.requestFocus();
+        //showSoftKeyboard(et_status);
 
         if(tweetId != -1L){
 
@@ -114,7 +127,7 @@ public class UpdateStatusActivity extends AppCompatActivity {
                 super.onSuccess(statusCode, headers, response);
                 setResult(RESULT_OK);
                 Toast.makeText(UpdateStatusActivity.this, R.string.update_status_success, Toast.LENGTH_SHORT).show();
-                finish();
+                supportFinishAfterTransition();
             }
 
             @Override
@@ -122,7 +135,7 @@ public class UpdateStatusActivity extends AppCompatActivity {
                 super.onFailure(statusCode, headers, throwable, errorResponse);
                 setResult(RESULT_CANCELED);
                 Toast.makeText(UpdateStatusActivity.this, R.string.update_status_error, Toast.LENGTH_SHORT).show();
-                finish();
+                supportFinishAfterTransition();
             }
         });
     }

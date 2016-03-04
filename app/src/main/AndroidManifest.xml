@@ -63,7 +63,7 @@
             android:name=".activities.UpdateStatusActivity"
             android:launchMode="singleTask"
             android:taskAffinity=""
-            android:windowSoftInputMode="adjustResize">
+            android:windowSoftInputMode="stateHidden|adjustResize">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activities.MainActivity" />
