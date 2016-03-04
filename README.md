@@ -20,6 +20,15 @@ The following libraries are used to make this possible:
  * [Glide](https://github.com/bumptech/glide) - Used for async image loading and caching them in memory and on disk.
  * [ActiveAndroid](https://github.com/pardom/ActiveAndroid) - Simple ORM for persisting a local SQLite database on the Android device
  * [ButterKnife](http://jakewharton.github.io/butterknife/) - Reduce boilerplate code with view bindings.
+ 
+## Features 
+
+- [x] Animated Vector Drawables (rotate refresh icon in login button)
+- [x] Shared Content Transition for Tweets when clicking reply or retweet
+- [x] Navigation Bar with Custom User Header that fetches profile info and easy access to logout action
+- [x] Linkify hashtags, usernames, and urls (however only urls are given proper actions to open browser)
+- [x] Jackson deserialization of Tweets into Users and Entities (borrowed twitter-text's Extractor.Entity class)
+- [x] Saves tweets that you attempt to reply or retweet 
 
 ## Usage
 
