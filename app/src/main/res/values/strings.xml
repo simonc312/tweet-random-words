@@ -18,5 +18,6 @@
     <string name="update_status_error">Tweet was lost in the digital abyss..</string>
     <string name="item_transition">itemTransition</string>
     <string name="default_text_count">0/140</string>
+    <string name="login_progress">Logging in</string>
 
 </resources>

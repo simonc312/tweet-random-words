@@ -70,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
     private void setUpNavDrawer() {
         if (mToolbar != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            mToolbar.setNavigationIcon(R.drawable.ic_menu_black_24dp);
+            mToolbar.setNavigationIcon(R.drawable.menu);
             setUpNavDrawerListener();
         }
     }

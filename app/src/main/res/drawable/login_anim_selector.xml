@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<animated-selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/refresh_state"
+        android:state_checked="true"
+        android:drawable="@drawable/refresh"/>
+    <item
+        android:id="@+id/default_state"
+        android:drawable="@drawable/login"/>
+    <transition
+        android:fromId="@id/default_state"
+        android:toId="@id/refresh_state"
+        android:drawable="@drawable/progress_anim_vector"
+        android:reversible="false"/>
+
+
+</animated-selector>

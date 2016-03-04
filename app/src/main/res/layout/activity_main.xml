@@ -13,7 +13,7 @@
         android:id="@+id/fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_pencil"
+        android:src="@drawable/pencil"
         android:tint="@color/md_white_1000"
         android:layout_margin="@dimen/default_padding"
         app:fabSize="normal"

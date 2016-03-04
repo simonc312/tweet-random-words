@@ -2,10 +2,14 @@ package com.simonc312.apps.tweetrandomwords.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.graphics.drawable.AnimatedVectorDrawableCompat;
 import android.view.Menu;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import com.codepath.oauth.OAuthLoginActionBarActivity;
 import com.simonc312.apps.tweetrandomwords.R;
@@ -19,7 +23,7 @@ import butterknife.OnClick;
 public class LoginActivity extends OAuthLoginActionBarActivity<RestClient> {
 
     @Bind(R.id.btn_login)
-    Button btn_login;
+    ToggleButton btn_login;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -34,12 +38,6 @@ public class LoginActivity extends OAuthLoginActionBarActivity<RestClient> {
         checkIfLaunchMain();
     }
 
-    private void checkIfLaunchMain() {
-        if(getClient().isAuthenticated())
-            startActivity(new Intent(this, MainActivity.class));
-    }
-
-
     // Inflate the menu; this adds items to the action bar if it is present.
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -53,7 +51,6 @@ public class LoginActivity extends OAuthLoginActionBarActivity<RestClient> {
 	public void onLoginSuccess() {
 		Toast.makeText(this,"Welcome",Toast.LENGTH_LONG).show();
         checkIfLaunchMain();
-        btn_login.setEnabled(true);
 	}
 
 	// OAuth authentication flow failed, handle the error
@@ -68,8 +65,20 @@ public class LoginActivity extends OAuthLoginActionBarActivity<RestClient> {
 	// This should be tied to a button used to login
     @OnClick(R.id.btn_login)
 	public void loginToRest(View view) {
-        btn_login.setEnabled(false);
+        btn_login.setClickable(false);
 		getClient().connect();
 	}
+
+    private void checkIfLaunchMain() {
+        if(getClient().isAuthenticated())
+            startActivity(new Intent(this, MainActivity.class));
+        else
+            initLogin(btn_login);
+    }
+
+    private void initLogin(ToggleButton btn_login) {
+        btn_login.setClickable(true);
+        btn_login.setChecked(false);
+    }
 
 }
