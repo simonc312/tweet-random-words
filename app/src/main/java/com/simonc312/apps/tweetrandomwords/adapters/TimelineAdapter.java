@@ -47,9 +47,17 @@ public class TimelineAdapter extends RecyclerView.Adapter<TweetViewHolder> {
         return tweets.size();
     }
 
-    public void addAll(List<Tweet> newList){
-        tweets.addAll(newList);
-        notifyItemRangeInserted(tweets.size()-newList.size(),tweets.size());
+    public void addAll(List<Tweet> newList, int position){
+        tweets.addAll(position, newList);
+        notifyItemRangeInserted(position,newList.size());
+    }
+
+    public void addAllEnd(List<Tweet> newList){
+        addAll(newList, tweets.size());
+    }
+
+    public void addAllFront(List<Tweet> tweetList) {
+        addAll(tweetList, 0);
     }
 
     /**
@@ -75,4 +83,6 @@ public class TimelineAdapter extends RecyclerView.Adapter<TweetViewHolder> {
     public Tweet getItem(int adapterPosition) {
         return tweets.get(adapterPosition);
     }
+
+
 }

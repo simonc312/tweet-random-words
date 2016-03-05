@@ -37,13 +37,13 @@ public class UserTimelineFragment extends HomeTimelineFragment {
     }
 
     @Override
-    protected void fetchData(boolean fetchLatest){
+    public void fetchData(final boolean fetchLatest){
         String maxId = adapter.getMaxId();
         String sinceId = fetchLatest ? adapter.getSinceId() : null;
         RestApplication.getRestClient().getUserTimeline(screenName, maxId, sinceId, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
-                handleOnSuccess(response);
+                handleOnSuccess(response, fetchLatest);
             }
 
             @Override

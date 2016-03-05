@@ -104,13 +104,13 @@ public class HomeTimelineFragment extends android.support.v4.app.Fragment implem
         swipeRefreshLayout.setColorSchemeColors(R.color.colorPrimary);
     }
 
-    protected void fetchData(boolean fetchLatest){
-        String maxId = adapter.getMaxId();
+    public void fetchData(final boolean fetchLatest){
+        String maxId = fetchLatest ? null : adapter.getMaxId();
         String sinceId = fetchLatest ? adapter.getSinceId() : null;
         RestApplication.getRestClient().getHomeTimeline(maxId, sinceId, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
-                handleOnSuccess(response);
+                handleOnSuccess(response,fetchLatest);
             }
 
             @Override
@@ -121,11 +121,16 @@ public class HomeTimelineFragment extends android.support.v4.app.Fragment implem
         });
     }
 
-    protected void handleOnSuccess(JSONArray response){
+    protected void handleOnSuccess(JSONArray response, boolean fetchLatest){
         try {
             //Log.d("log", response.toString());
             List<Tweet> tweetList = reader.readValue(response.toString());
-            adapter.addAll(tweetList);
+            if(fetchLatest) {
+                adapter.addAllFront(tweetList);
+                recyclerView.scrollToPosition(0);
+            }
+            else
+                adapter.addAllEnd(tweetList);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -133,7 +138,6 @@ public class HomeTimelineFragment extends android.support.v4.app.Fragment implem
 
     private void setupDeserializer() {
         SimpleModule simpleModule = new SimpleModule();
-        //TODO twitter-text is just really buggy right now. Don't try to use it for auto-linking with entities
         simpleModule.addDeserializer(Entities.class, new EntitiesDeserializer());
         reader = new ObjectMapper()
                 .registerModule(simpleModule)

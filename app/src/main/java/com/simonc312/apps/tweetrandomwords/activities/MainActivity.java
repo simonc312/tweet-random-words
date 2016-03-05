@@ -28,6 +28,7 @@ import butterknife.OnTextChanged;
  */
 public class MainActivity extends AppCompatActivity {
 
+    private static final String CURRENT_FRAGMENT_TAG = "currentFragmentTag";
     @Bind(R.id.toolbar)
     Toolbar mToolbar;
     @Bind(R.id.drawer_layout)
@@ -55,6 +56,17 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(resultCode == RESULT_OK && requestCode == UpdateStatusActivity.REQUEST_CODE){
+            Fragment fragment = getSupportFragmentManager().findFragmentByTag(CURRENT_FRAGMENT_TAG);
+            if(fragment instanceof HomeTimelineFragment){
+                ((HomeTimelineFragment) fragment).fetchData(true);
+            }
+        }
     }
 
     @OnClick(R.id.fab)
@@ -115,12 +127,13 @@ public class MainActivity extends AppCompatActivity {
 
         // Insert the fragment by replacing any existing fragment
         FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.fl_container, fragment).commit();
+        fragmentManager.beginTransaction().replace(R.id.fl_container, fragment,CURRENT_FRAGMENT_TAG).commit();
 
         // Highlight the selected item, update the title, and close the drawer
         menuItem.setChecked(true);
-        setTitle(menuItem.getTitle());
+        getSupportActionBar().setTitle(menuItem.getTitle());
         mDrawerLayout.closeDrawers();
+
     }
 
 }
