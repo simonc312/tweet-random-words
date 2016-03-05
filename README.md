@@ -1,6 +1,6 @@
 # Tweet Random Words ![ic_launcher.png](https://github.com/simonc312/tweet-random-words/blob/master/app/src/main/res/drawable-mdpi/ic_launcher.png)
 
-Quick app walkthrough: ![walkthrough.gif](https://github.com/simonc312/tweet-random-words/blob/assets/walkthrough.gif)
+Quick app walkthrough: ![walkthrough.gif](https://github.com/simonc312/tweet-random-words/blob/master/assets/walkthrough.gif)
 
 ## Overview
 
