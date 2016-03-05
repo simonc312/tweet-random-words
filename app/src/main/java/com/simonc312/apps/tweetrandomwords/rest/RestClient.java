@@ -88,7 +88,7 @@ public class RestClient extends OAuthBaseClient {
         RequestParams params = new RequestParams();
         params.put("status",status);
         if(replyId != null)
-            params.put("in_reply_to_status",replyId);
+            params.put("in_reply_to_status_id",replyId);
         if(false){
             params.put("lat","");
             params.put("long","");

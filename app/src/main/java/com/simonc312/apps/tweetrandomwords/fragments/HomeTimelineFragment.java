@@ -78,6 +78,54 @@ public class HomeTimelineFragment extends android.support.v4.app.Fragment implem
         ButterKnife.unbind(this);
     }
 
+    @Override
+    public void handleClickEvent(int itemPosition, View itemView, TYPE type) {
+        Tweet t = adapter.getItem(itemPosition);
+        //saving tweet does not automatically save user and entities...
+        t.getUser().save();
+        t.save();
+        Intent intent = new Intent(getContext(), UpdateStatusActivity.class);
+        intent.putExtra("tweetId", t.getTweetId());
+        intent.putExtra("type", type);
+
+        //pass shared elements
+        ActivityOptionsCompat options = ActivityOptionsCompat.
+                makeSceneTransitionAnimation(getActivity(), itemView, getString(R.string.item_transition));
+        getActivity().startActivityForResult(intent, UpdateStatusActivity.REQUEST_CODE, options.toBundle());
+    }
+
+    public void fetchData(final boolean fetchLatest){
+        String maxId = getMaxId(!fetchLatest);
+        String sinceId = getSinceId(fetchLatest);
+        RestApplication.getRestClient().getHomeTimeline(maxId, sinceId, new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
+                handleOnSuccess(response, fetchLatest);
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                if (getContext() != null)
+                    Toast.makeText(getContext(), R.string.error, Toast.LENGTH_SHORT);
+            }
+        });
+    }
+
+    protected void handleOnSuccess(JSONArray response, boolean fetchLatest){
+        try {
+            //Log.d("log", response.toString());
+            List<Tweet> tweetList = reader.readValue(response.toString());
+            if(fetchLatest) {
+                adapter.addAllFront(tweetList);
+                recyclerView.scrollToPosition(0);
+            }
+            else
+                adapter.addAllEnd(tweetList);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     private void setupRecyclerview(final RecyclerView recyclerView) {
         if(adapter == null)
             adapter = new TimelineAdapter(getContext(),new ArrayList<Tweet>(),this);
@@ -104,38 +152,6 @@ public class HomeTimelineFragment extends android.support.v4.app.Fragment implem
         swipeRefreshLayout.setColorSchemeColors(R.color.colorPrimary);
     }
 
-    public void fetchData(final boolean fetchLatest){
-        String maxId = fetchLatest ? null : adapter.getMaxId();
-        String sinceId = fetchLatest ? adapter.getSinceId() : null;
-        RestApplication.getRestClient().getHomeTimeline(maxId, sinceId, new JsonHttpResponseHandler() {
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
-                handleOnSuccess(response,fetchLatest);
-            }
-
-            @Override
-            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-                if(getContext() != null)
-                    Toast.makeText(getContext(), R.string.error, Toast.LENGTH_SHORT);
-            }
-        });
-    }
-
-    protected void handleOnSuccess(JSONArray response, boolean fetchLatest){
-        try {
-            //Log.d("log", response.toString());
-            List<Tweet> tweetList = reader.readValue(response.toString());
-            if(fetchLatest) {
-                adapter.addAllFront(tweetList);
-                recyclerView.scrollToPosition(0);
-            }
-            else
-                adapter.addAllEnd(tweetList);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
     private void setupDeserializer() {
         SimpleModule simpleModule = new SimpleModule();
         simpleModule.addDeserializer(Entities.class, new EntitiesDeserializer());
@@ -151,19 +167,11 @@ public class HomeTimelineFragment extends android.support.v4.app.Fragment implem
                 });
     }
 
-    @Override
-    public void handleClickEvent(int itemPosition, View itemView, TYPE type) {
-        Tweet t = adapter.getItem(itemPosition);
-        //saving tweet does not automatically save user and entities...
-        t.getUser().save();
-        t.save();
-        Intent intent = new Intent(getContext(), UpdateStatusActivity.class);
-        intent.putExtra("tweetId",t.getTweetId());
-        intent.putExtra("type",type);
+    protected String getMaxId(boolean condition){
+        return condition ? adapter.getMaxId() : null;
+    }
 
-        //pass shared elements
-        ActivityOptionsCompat options = ActivityOptionsCompat.
-                makeSceneTransitionAnimation(getActivity(), itemView, getString(R.string.item_transition));
-        getActivity().startActivityForResult(intent, UpdateStatusActivity.REQUEST_CODE, options.toBundle());
+    protected String getSinceId(boolean condition){
+        return condition ? adapter.getSinceId() : null;
     }
 }

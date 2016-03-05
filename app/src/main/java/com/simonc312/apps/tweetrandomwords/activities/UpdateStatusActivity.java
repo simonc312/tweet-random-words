@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
@@ -133,9 +134,8 @@ public class UpdateStatusActivity extends AppCompatActivity {
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
                 super.onFailure(statusCode, headers, throwable, errorResponse);
-                setResult(RESULT_CANCELED);
+                Log.e("error",errorResponse.toString());
                 Toast.makeText(UpdateStatusActivity.this, R.string.update_status_error, Toast.LENGTH_SHORT).show();
-                supportFinishAfterTransition();
             }
         });
     }
