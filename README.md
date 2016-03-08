@@ -6,6 +6,11 @@ Quick app walkthrough: ![walkthrough.gif](https://github.com/simonc312/tweet-ran
 
 This app was built to test the possibilities of the twitter api. 
 
+The logo was made in Illustrator and used these two tutorials and assets:
+ * [Long Angled Shadow Effect]()
+ * [Rounded Polygon Effect](http://shapeshed.com/rounding_edges_in_illustrator/)
+ * [Twitter Logo Vector](https://materialdesignicons.com/icon/twitter)
+
 Tweet Random Words builds off a skeleton Android project that makes writing Android apps sourced from OAuth JSON REST APIs as easy as possible. This skeleton project
 combines the best libraries and structure to enable quick development of rich API clients. The following things are supported out of the box:
 
