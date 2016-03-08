@@ -7,7 +7,7 @@ Quick app walkthrough: ![walkthrough.gif](https://github.com/simonc312/tweet-ran
 This app was built to test the possibilities of the twitter api. 
 
 The logo was made in Illustrator and used these two tutorials and assets:
- * [Long Angled Shadow Effect](vectips.com/tips-and-tricks/long-shadow-effect/)
+ * [Long Angled Shadow Effect](http://vectips.com/tips-and-tricks/long-shadow-effect/)
  * [Rounded Polygon Effect](http://shapeshed.com/rounding_edges_in_illustrator/)
  * [Twitter Logo Vector](https://materialdesignicons.com/icon/twitter)
 
