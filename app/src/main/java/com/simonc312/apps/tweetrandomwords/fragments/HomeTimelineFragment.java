@@ -7,7 +7,6 @@ import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -106,7 +105,7 @@ public class HomeTimelineFragment extends android.support.v4.app.Fragment implem
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
                 if (getContext() != null)
-                    Toast.makeText(getContext(), R.string.error, Toast.LENGTH_SHORT);
+                    Toast.makeText(getContext(), R.string.error, Toast.LENGTH_SHORT).show();
             }
         });
     }

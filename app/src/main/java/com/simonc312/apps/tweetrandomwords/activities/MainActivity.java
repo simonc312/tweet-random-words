@@ -7,13 +7,12 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.widget.Toast;
 
-import com.simonc312.apps.tweetrandomwords.customviews.NavHeaderUser;
-import com.simonc312.apps.tweetrandomwords.fragments.HomeTimelineFragment;
 import com.simonc312.apps.tweetrandomwords.R;
+import com.simonc312.apps.tweetrandomwords.fragments.HomeTimelineFragment;
 import com.simonc312.apps.tweetrandomwords.fragments.UserTimelineFragment;
 import com.simonc312.apps.tweetrandomwords.models.User;
 import com.simonc312.apps.tweetrandomwords.rest.RestApplication;
@@ -21,12 +20,11 @@ import com.simonc312.apps.tweetrandomwords.rest.RestApplication;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import butterknife.OnTextChanged;
 
 /**
  * Created by Simon on 2/28/2016.
  */
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseActivity {
 
     private static final String CURRENT_FRAGMENT_TAG = "currentFragmentTag";
     @Bind(R.id.toolbar)
@@ -94,7 +92,14 @@ public class MainActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.action_logout:
-                        if(RestApplication.logout()) finish();
+                        if(RestApplication.logout()) {
+                            activityRouter.startLogin();
+                        } else {
+                            Toast.makeText(
+                                    MainActivity.this,
+                                    R.string.logout_error_toast,
+                                    Toast.LENGTH_SHORT).show();
+                        }
                         break;
                     default:
                         selectDrawerItem(item);

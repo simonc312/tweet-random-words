@@ -19,5 +19,8 @@
     <string name="item_transition">itemTransition</string>
     <string name="default_text_count">0/140</string>
     <string name="login_progress">Logging in</string>
+    <string name="on_login_success_toast">Welcome</string>
+    <string name="oauth_failure_toast">Authentication was not successful. New login required.</string>
+    <string name="logout_error_toast">Unable to log out. Please check if network is available and try again.</string>
 
 </resources>

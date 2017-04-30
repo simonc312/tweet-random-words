@@ -31,7 +31,7 @@ public class RestApplication extends com.activeandroid.app.Application {
 		return (RestClient) RestClient.getInstance(RestClient.class, RestApplication.context);
 	}
 
-    public static boolean logout(){
+    public static boolean logout() {
         if(getRestClient() != null) {
             authenticatedUser = null;
             getRestClient().clearAccessToken();

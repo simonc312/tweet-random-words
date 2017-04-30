@@ -1,20 +1,16 @@
 package com.simonc312.apps.tweetrandomwords.activities;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.support.graphics.drawable.AnimatedVectorDrawableCompat;
-import android.view.Menu;
+import android.support.annotation.NonNull;
+import android.support.annotation.VisibleForTesting;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.widget.Button;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import com.codepath.oauth.OAuthLoginActionBarActivity;
 import com.simonc312.apps.tweetrandomwords.R;
-import com.simonc312.apps.tweetrandomwords.rest.RestApplication;
 import com.simonc312.apps.tweetrandomwords.rest.RestClient;
+import com.simonc312.apps.tweetrandomwords.routers.ActivityRouter;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -24,33 +20,35 @@ public class LoginActivity extends OAuthLoginActionBarActivity<RestClient> {
 
     @Bind(R.id.btn_login)
     ToggleButton btn_login;
+	@VisibleForTesting
+	protected ActivityRouter activityRouter;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		this.activityRouter = ActivityRouter.getRouter(this);
 		setContentView(R.layout.activity_login);
 		ButterKnife.bind(this);
 	}
 
-    @Override
-    public void onResume(){
-        super.onResume();
-        checkIfLaunchMain();
-    }
-
-    // Inflate the menu; this adds items to the action bar if it is present.
 	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		getMenuInflater().inflate(R.menu.login, menu);
-		return true;
+	public void onResume() {
+		super.onResume();
+		delegateRedirect();
+	}
+
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		this.activityRouter = null;
 	}
 
 	// OAuth authenticated successfully, launch primary authenticated activity
 	// i.e Display application "homepage"
 	@Override
 	public void onLoginSuccess() {
-		Toast.makeText(this,"Welcome",Toast.LENGTH_LONG).show();
-        checkIfLaunchMain();
+		Toast.makeText(this, R.string.on_login_success_toast,Toast.LENGTH_LONG).show();
+        delegateRedirect();
 	}
 
 	// OAuth authentication flow failed, handle the error
@@ -58,6 +56,7 @@ public class LoginActivity extends OAuthLoginActionBarActivity<RestClient> {
 	@Override
 	public void onLoginFailure(Exception e) {
 		e.printStackTrace();
+		initLogin(btn_login);
 	}
 
 	// Click handler method for the button used to start OAuth flow
@@ -69,14 +68,15 @@ public class LoginActivity extends OAuthLoginActionBarActivity<RestClient> {
 		getClient().connect();
 	}
 
-    private void checkIfLaunchMain() {
-        if(getClient().isAuthenticated())
-            startActivity(new Intent(this, MainActivity.class));
-        else
-            initLogin(btn_login);
+    private void delegateRedirect() {
+        if(getClient().isAuthenticated()) {
+			activityRouter.startMain();
+		} else {
+			initLogin(btn_login);
+		}
     }
 
-    private void initLogin(ToggleButton btn_login) {
+    private void initLogin(@NonNull final ToggleButton btn_login) {
         btn_login.setClickable(true);
         btn_login.setChecked(false);
     }
